@@ -3,33 +3,52 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:background="@color/black"
+    android:padding="8dp"
+    android:layout_marginBottom="15px">
+    <TextView
+        android:id="@+id/todo_number"
+        android:layout_width="35px"
+        android:layout_height="50px">
 
+    </TextView>
     <CheckBox
         android:id="@+id/todo_checkbox"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
 
     <TextView
         android:id="@+id/todo_text"
         android:layout_width="0dp"
+        android:minHeight="48dp"
         android:layout_height="wrap_content"
+        android:maxLines="10"
         android:layout_weight="1"
+        android:textColor="#FFFF00"
         android:text="Przykładowe zadanie"
         android:textSize="16sp"
-        android:paddingStart="8dp" />
+        android:paddingStart="8dp"
+        android:clickable="true"
+        android:background="@android:color/transparent" />
 
-    <ImageButton
-        android:id="@+id/todo_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_edit"
-        android:contentDescription="Edytuj" />
+       <ImageButton
+           android:id="@+id/moreButton"
+           android:layout_width="40px"
+           android:layout_height="40px">
 
-    <ImageButton
-        android:id="@+id/todo_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_delete"
-        android:contentDescription="Usuń" />
+       </ImageButton>
+<!--    <ImageButton-->
+<!--        android:id="@+id/todo_edit"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@android:drawable/ic_menu_edit"-->
+<!--        android:contentDescription="Edytuj" />-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/todo_delete"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@android:drawable/ic_menu_delete"-->
+<!--        android:contentDescription="Usuń" />-->
 </LinearLayout>
