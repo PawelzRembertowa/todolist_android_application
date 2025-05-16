@@ -1,8 +1,8 @@
 package com.example.todolistapplication.todoitem;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public class ToDoItem {
 
@@ -11,17 +11,26 @@ public class ToDoItem {
     private boolean isDone;
     private List<ToDoItem> subItems;
     private Date createdAt;
-    private Date finishedAt; // null dopóki nie zakończone
+    private Date finishedAt;
+    private boolean isSubtask = false;
 
+    // Konstruktor dla głównego zadania
     public ToDoItem(String text) {
+        this(text, false); // domyślnie nie jest subtaskiem
+    }
+
+    // Konstruktor dla subtaska
+    public ToDoItem(String text, boolean isSubtask) {
         this.id = System.currentTimeMillis();
         this.text = text;
         this.isDone = false;
         this.subItems = new ArrayList<>();
+        this.createdAt = new Date();
+        this.finishedAt = null;
+        this.isSubtask = isSubtask;
     }
 
-    // --- Gettery i settery ---
-
+    // Gettery i settery
     public long getId() {
         return id;
     }
@@ -50,12 +59,10 @@ public class ToDoItem {
         this.subItems = subItems;
     }
 
-    // --- Dodawanie sub-itemu ---
     public void addSubItem(ToDoItem item) {
         subItems.add(item);
     }
 
-    // --- Usuwanie sub-itemu ---
     public void removeSubItem(ToDoItem item) {
         subItems.remove(item);
     }
@@ -67,4 +74,17 @@ public class ToDoItem {
     public Date getFinishedAt() {
         return finishedAt;
     }
+
+    public void setFinishedAt(Date finishedAt) {
+        this.finishedAt = finishedAt;
+    }
+
+    public boolean isSubtask() {
+        return isSubtask;
+    }
+
+    public void setSubtask(boolean subtask) {
+        isSubtask = subtask;
+    }
 }
+

@@ -8,4 +8,8 @@
         android:id="@+id/delete"
         android:title="Usuń"
         android:icon="@android:drawable/ic_menu_delete"/>
+
+    <item
+        android:id="@+id/add_subtask"
+        android:title="Dodaj subtask" />
 </menu>

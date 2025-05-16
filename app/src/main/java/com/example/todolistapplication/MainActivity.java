@@ -11,20 +11,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.InputType;
-import android.view.View;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.todolistapplication.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,9 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-//    private AppBarConfiguration appBarConfiguration;
-//    private ActivityMainBinding binding;
 
     private List<ToDoItem> itemList = new ArrayList<>();
     private ToDoAdapter adapter;
@@ -84,20 +71,17 @@ public class MainActivity extends AppCompatActivity {
                 itemList.remove(position);
                 adapter.notifyItemRemoved(position);
             }
+
+            @Override
+            public void addSubtask(ToDoItem parentItem, ToDoItem subtask) {
+
+            }
         });
 
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton fab = findViewById(R.id.addToDoItem);
         fab.setOnClickListener(v -> {
-            // przygotowanie dodwania zadania w FAB
-//            EditText input = new EditText(context);
-//            input.setHint("Wprowadź zadanie");
-
-
-//            ToDoItem newItem = new ToDoItem("Nowe zadanie");
-//            itemList.add(newItem);
-//            adapter.notifyItemInserted(itemList.size() - 1);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle("Dodaj zadanie");
@@ -124,32 +108,37 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
+    public void showAddSubtaskDialog(ToDoItem parentItem, int parentPosition) {
+        final EditText input = new EditText(MainActivity.this);
+        input.setHint("Wpisz subtask");
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Dodaj subtask");
+        builder.setView(input);
 
-//    @Override
-//    public boolean onSupportNavigateUp() {
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-//        return NavigationUI.navigateUp(navController, appBarConfiguration)
-//                || super.onSupportNavigateUp();
-//    }
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String subtaskText = input.getText().toString().trim();
+
+            if (!subtaskText.isEmpty()) {
+                ToDoItem subtask = new ToDoItem(subtaskText);
+                subtask.setSubtask(true);
+
+                // 1. Dodaj do listy subtasków rodzica
+                parentItem.addSubItem(subtask);
+
+                // 2. Dodaj subtask do listy wyświetlanych elementów (zaraz pod rodzicem)
+                int insertPosition = parentPosition + 1;
+                itemList.add(insertPosition, subtask);
+
+                // 3. Powiadom adapter
+                adapter.notifyItemInserted(insertPosition);
+            } else {
+                Toast.makeText(MainActivity.this, "Subtask nie może być pusty", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Anuluj", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
 }
