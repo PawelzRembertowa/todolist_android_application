@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/edit"
-        android:title="Edytuj"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
+  <item
+      android:id="@+id/edit"
+      android:icon="@android:drawable/ic_menu_edit"
+      android:paddingTop="10dp"
+      android:paddingBottom="10dp"
+      android:title="Edytuj" />
 
-    <item
-        android:id="@+id/delete"
-        android:title="Usuń"
-        android:icon="@android:drawable/ic_menu_delete"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
+  <item
+      android:id="@+id/delete"
+      android:icon="@android:drawable/ic_menu_delete"
+      android:paddingTop="10dp"
+      android:paddingBottom="10dp"
+      android:title="Usuń" />
 
-    <item
-        android:id="@+id/add_subtask"
-        android:title="Dodaj subtask"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
+  <item
+      android:id="@+id/add_subtask"
+      android:paddingTop="10dp"
+      android:paddingBottom="10dp"
+      android:title="Dodaj subtask" />
 </menu>

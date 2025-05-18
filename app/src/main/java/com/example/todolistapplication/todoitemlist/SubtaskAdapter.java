@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistapplication.R;
 import com.example.todolistapplication.todoitem.ToDoItem;
-import com.example.todolistapplication.todoitemlist.ToDoListener;
 
 import java.util.List;
 

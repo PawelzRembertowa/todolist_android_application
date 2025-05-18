@@ -21,101 +21,101 @@ import java.util.List;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHolder> {
 
-    private final List<ToDoItem> items;
-    private final ToDoListener listener;
+  private final List<ToDoItem> items;
+  private final ToDoListener listener;
 
-    public ToDoAdapter(List<ToDoItem> items, ToDoListener listener) {
-        this.items = items;
-        this.listener = listener;
+  public ToDoAdapter(List<ToDoItem> items, ToDoListener listener) {
+    this.items = items;
+    this.listener = listener;
+  }
+
+  @NonNull
+  @Override
+  public MainTaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item, parent, false);
+    return new MainTaskViewHolder(view);
+  }
+
+  @Override
+  public void onBindViewHolder(@NonNull MainTaskViewHolder holder, int position) {
+    ToDoItem item = items.get(position);
+    holder.todoText.setText(item.getText());
+    holder.checkBox.setChecked(item.isDone());
+
+    int number = 1;
+    for (int i = 0; i < position; i++) {
+      if (!items.get(i).isSubtask()) {
+        number++;
+      }
+    }
+    holder.numberText.setText(number + ".");
+
+    // 🎨 Use proper style, depending on checkbox status
+    if (item.isDone()) {
+      holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+      holder.todoText.setTextColor(Color.GRAY);
+    } else {
+      holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+      holder.todoText.setTextColor(Color.YELLOW);
     }
 
-    @NonNull
-    @Override
-    public MainTaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item, parent, false);
-        return new MainTaskViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull MainTaskViewHolder holder, int position) {
-        ToDoItem item = items.get(position);
-        holder.todoText.setText(item.getText());
-        holder.checkBox.setChecked(item.isDone());
-
-        int number = 1;
-        for (int i = 0; i < position; i++) {
-            if (!items.get(i).isSubtask()) {
-                number++;
+    holder.checkBox.setOnCheckedChangeListener(
+            (buttonView, isChecked) -> {
+              item.setDone(isChecked);
+              if (isChecked) {
+                holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                holder.todoText.setTextColor(Color.GRAY);
+              } else {
+                holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                holder.todoText.setTextColor(Color.YELLOW);
+              }
             }
+    );
+    holder.todoText.setOnClickListener(view -> listener.onEdit(item, position));
+    holder.moreButton.setOnClickListener(view -> {
+      PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+      popupMenu.inflate(R.menu.todoitem_menu);
+
+      popupMenu.setOnMenuItemClickListener(menuItem -> {
+        int id = menuItem.getItemId();
+        if (id == R.id.edit) {
+          listener.onEdit(item, position);
+          return true;
+        } else if (id == R.id.delete) {
+          listener.onDelete(item, position);
+          return true;
+        } else if (id == R.id.add_subtask) {
+          listener.onAddSubtask(item, position);
+          return true;
         }
-        holder.numberText.setText(number + ".");
+        return false;
+      });
 
-        // 🎨 Use proper style, depending on checkbox status
-        if (item.isDone()) {
-            holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.todoText.setTextColor(Color.GRAY);
-        } else {
-            holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.todoText.setTextColor(Color.YELLOW);
-        }
+      popupMenu.show();
+    });
 
-        holder.checkBox.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> {
-                    item.setDone(isChecked);
-                    if (isChecked) {
-                        holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                        holder.todoText.setTextColor(Color.GRAY);
-                    } else {
-                        holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                        holder.todoText.setTextColor(Color.YELLOW);
-                    }
-                }
-        );
-        holder.todoText.setOnClickListener(view -> listener.onEdit(item, position));
-        holder.moreButton.setOnClickListener(view -> {
-            PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-            popupMenu.inflate(R.menu.todoitem_menu);
+    holder.subtaskRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
+    holder.subtaskRecyclerView.setAdapter(new SubtaskAdapter(item.getSubItems(), item, listener));
+  }
 
-            popupMenu.setOnMenuItemClickListener(menuItem -> {
-                int id = menuItem.getItemId();
-                if (id == R.id.edit) {
-                    listener.onEdit(item, position);
-                    return true;
-                } else if (id == R.id.delete) {
-                    listener.onDelete(item, position);
-                    return true;
-                } else if (id == R.id.add_subtask) {
-                    listener.onAddSubtask(item, position);
-                    return true;
-                }
-                return false;
-            });
+  @Override
+  public int getItemCount() {
+    return items.size();
+  }
 
-            popupMenu.show();
-        });
+  static class MainTaskViewHolder extends RecyclerView.ViewHolder {
+    TextView todoText, numberText;
+    CheckBox checkBox;
+    ImageButton moreButton;
+    RecyclerView subtaskRecyclerView;
 
-        holder.subtaskRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
-        holder.subtaskRecyclerView.setAdapter(new SubtaskAdapter(item.getSubItems(), item, listener));
+    MainTaskViewHolder(View itemView) {
+      super(itemView);
+      todoText = itemView.findViewById(R.id.todo_text_main);
+      checkBox = itemView.findViewById(R.id.todo_checkbox_main);
+      numberText = itemView.findViewById(R.id.todo_number);
+      moreButton = itemView.findViewById(R.id.moreButton_main);
+      subtaskRecyclerView = itemView.findViewById(R.id.subtask_recyclerview);
     }
-
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
-
-    static class MainTaskViewHolder extends RecyclerView.ViewHolder {
-        TextView todoText, numberText;
-        CheckBox checkBox;
-        ImageButton moreButton;
-        RecyclerView subtaskRecyclerView;
-
-        MainTaskViewHolder(View itemView) {
-            super(itemView);
-            todoText = itemView.findViewById(R.id.todo_text_main);
-            checkBox = itemView.findViewById(R.id.todo_checkbox_main);
-            numberText = itemView.findViewById(R.id.todo_number);
-            moreButton = itemView.findViewById(R.id.moreButton_main);
-            subtaskRecyclerView = itemView.findViewById(R.id.subtask_recyclerview);
-        }
-    }
+  }
 }

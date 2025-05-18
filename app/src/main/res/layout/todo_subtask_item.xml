@@ -2,38 +2,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/black"
+    android:layout_marginStart="40dp"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
-    android:layout_marginStart="40dp">
+    app:cardBackgroundColor="@color/black"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp">
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:padding="8dp">
 
-    <!-- Checkbox dla subtaska -->
     <CheckBox
         android:id="@+id/todo_checkbox_subtask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp" />
 
-    <!-- Tekst subtaska -->
     <TextView
         android:id="@+id/todo_text_subtask"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:textColor="#FFFF00"
         android:background="@android:color/transparent"
-        android:textSize="14sp"
         android:ellipsize="none"
-        android:singleLine="false"
         android:maxLines="10"
-        android:layout_gravity="center_vertical" />
-</LinearLayout>
+        android:singleLine="false"
+        android:textColor="#FFFF00"
+        android:textSize="14sp" />
+  </LinearLayout>
 </androidx.cardview.widget.CardView>
