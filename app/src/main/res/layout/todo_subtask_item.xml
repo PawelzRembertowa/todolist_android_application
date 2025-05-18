@@ -31,8 +31,9 @@
         android:textColor="#FFFF00"
         android:background="@android:color/transparent"
         android:textSize="14sp"
-        android:ellipsize="end"
-        android:maxLines="1"
+        android:ellipsize="none"
+        android:singleLine="false"
+        android:maxLines="10"
         android:layout_gravity="center_vertical" />
 </LinearLayout>
 </androidx.cardview.widget.CardView>

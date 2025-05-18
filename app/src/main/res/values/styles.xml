@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Styl dla menu -->
+    <style name="CustomMenuStyle" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:background">@color/dark_gray</item>  <!-- Tło ciemnoszare -->
+        <item name="android:textColor">#FFFFFF</item>  <!-- Kolor tekstu biały -->
+    </style>
+</resources>

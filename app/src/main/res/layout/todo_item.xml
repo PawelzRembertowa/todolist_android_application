@@ -36,20 +36,26 @@
         android:layout_width="0dp"
         android:minHeight="48dp"
         android:layout_height="wrap_content"
-        android:maxLines="10"
         android:layout_weight="1"
         android:textColor="#FFFF00"
         android:text="Przykładowe zadanie"
         android:textSize="16sp"
         android:paddingStart="8dp"
+        android:paddingBottom="8dp"
         android:clickable="true"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"
+        android:maxLines="10"
+
+        />
 
        <ImageButton
            android:id="@+id/moreButton_main"
-           android:layout_width="40px"
-           android:layout_height="40px">
-
+           android:layout_width="20dp"
+           android:layout_height="20dp"
+           android:background="@drawable/button_background"
+           android:src="@android:drawable/ic_menu_more"
+           android:contentDescription="Opcje"
+           app:tint="@android:color/black">
        </ImageButton>
 </LinearLayout>
 <androidx.recyclerview.widget.RecyclerView
