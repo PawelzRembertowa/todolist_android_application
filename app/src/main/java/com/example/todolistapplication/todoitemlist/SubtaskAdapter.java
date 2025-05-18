@@ -1,5 +1,7 @@
 package com.example.todolistapplication.todoitemlist;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,25 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
     holder.checkBox.setChecked(subtask.isDone());
 
     holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> subtask.setDone(isChecked));
+
+    if (subtask.isDone()) {
+      holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+      holder.todoText.setTextColor(Color.GRAY);
+    } else {
+      holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+      holder.todoText.setTextColor(Color.YELLOW);
+    }
+    holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      subtask.setDone(isChecked);
+
+      if (isChecked) {
+        holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.todoText.setTextColor(Color.GRAY);
+      } else {
+        holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        holder.todoText.setTextColor(Color.YELLOW);
+      }
+    });
 
     holder.todoText.setOnClickListener(view -> {
       new AlertDialog.Builder(view.getContext())

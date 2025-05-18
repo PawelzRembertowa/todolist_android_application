@@ -1,5 +1,7 @@
 package com.example.todolistapplication.todoitemlist;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +50,27 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
         }
         holder.numberText.setText(number + ".");
 
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> item.setDone(isChecked));
+        // 🎨 Use proper style, depending on checkbox status
+        if (item.isDone()) {
+            holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.todoText.setTextColor(Color.GRAY);
+        } else {
+            holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.todoText.setTextColor(Color.YELLOW);
+        }
+
+        holder.checkBox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    item.setDone(isChecked);
+                    if (isChecked) {
+                        holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        holder.todoText.setTextColor(Color.GRAY);
+                    } else {
+                        holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                        holder.todoText.setTextColor(Color.YELLOW);
+                    }
+                }
+        );
         holder.todoText.setOnClickListener(view -> listener.onEdit(item, position));
         holder.moreButton.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
