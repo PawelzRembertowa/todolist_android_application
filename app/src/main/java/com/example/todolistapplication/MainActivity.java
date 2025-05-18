@@ -92,8 +92,10 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
                         ToDoItem subtask = new ToDoItem(subText);
                         subtask.setSubtask(true);
                         parentItem.addSubItem(subtask);
-                        adapter.notifyItemChanged(parentPosition); // Odśwież widok maintaska
-
+                        int newIndex = itemList.indexOf(parentItem);
+                        if (newIndex != -1) {
+                            adapter.notifyItemChanged(newIndex);
+                        }
                     }
                 })
                 .setNegativeButton("Anuluj", null)
