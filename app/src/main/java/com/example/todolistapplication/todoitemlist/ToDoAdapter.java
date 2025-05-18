@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistapplication.R;
 import com.example.todolistapplication.todoitem.ToDoItem;
-import com.example.todolistapplication.todoitemlist.SubtaskAdapter;
-import com.example.todolistapplication.todoitemlist.ToDoListener;
 
 import java.util.List;
 
@@ -41,12 +39,17 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
         ToDoItem item = items.get(position);
         holder.todoText.setText(item.getText());
         holder.checkBox.setChecked(item.isDone());
-        holder.numberText.setText((position + 1) + ".");
+
+        int number = 1;
+        for (int i = 0; i < position; i++) {
+            if (!items.get(i).isSubtask()) {
+                number++;
+            }
+        }
+        holder.numberText.setText(number + ".");
 
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> item.setDone(isChecked));
-
         holder.todoText.setOnClickListener(view -> listener.onEdit(item, position));
-
         holder.moreButton.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
             popupMenu.inflate(R.menu.todoitem_menu);

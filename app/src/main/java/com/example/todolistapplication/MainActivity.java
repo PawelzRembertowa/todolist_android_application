@@ -1,10 +1,8 @@
 package com.example.todolistapplication;
 
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
+
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistapplication.todoitem.ToDoItem;
-// import com.example.todolistapplication.todoitemlist.ToDoAdapter;
 import com.example.todolistapplication.todoitemlist.ToDoAdapter;
 import com.example.todolistapplication.todoitemlist.ToDoListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -74,8 +71,11 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
 
     @Override
     public void onDelete(ToDoItem item, int position) {
-        itemList.remove(position);
-        adapter.notifyItemRemoved(position);
+        position = itemList.indexOf(item);
+        if (position != -1) {
+            itemList.remove(position);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

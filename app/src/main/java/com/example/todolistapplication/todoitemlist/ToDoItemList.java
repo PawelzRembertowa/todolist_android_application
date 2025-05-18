@@ -13,22 +13,18 @@ public class ToDoItemList {
         this.items = new ArrayList<>();
     }
 
-    // --- Dodawanie zadania ---
     public void addItem(ToDoItem item) {
         items.add(item);
     }
 
-    // --- Usuwanie zadania ---
     public boolean removeItem(ToDoItem item) {
         return items.remove(item);
     }
 
-    // --- Pobieranie wszystkich zadań ---
     public List<ToDoItem> getItems() {
         return items;
     }
 
-    // --- Wyszukiwanie zadania po ID ---
     public ToDoItem getItemById(long id) {
         for (ToDoItem item : items) {
             if (item.getId() == id) {
@@ -38,12 +34,10 @@ public class ToDoItemList {
         return null;
     }
 
-    // --- Czyszczenie listy ---
     public void clearAll() {
         items.clear();
     }
 
-    // --- Liczenie zadań zakończonych ---
     public int countCompleted() {
         int count = 0;
         for (ToDoItem item : items) {
@@ -54,7 +48,6 @@ public class ToDoItemList {
         return count;
     }
 
-    // --- Liczenie zadań ogólnie ---
     public int size() {
         return items.size();
     }
