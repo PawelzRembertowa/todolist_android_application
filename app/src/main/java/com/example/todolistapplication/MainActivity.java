@@ -1,5 +1,10 @@
 package com.example.todolistapplication;
 
+import android.content.SharedPreferences;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+
 import android.os.Bundle;
 
 import android.widget.EditText;
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
     RecyclerView recyclerView = findViewById(R.id.todoRecyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+    loadTasks();
     adapter = new ToDoAdapter(itemList, this);
     recyclerView.setAdapter(adapter);
 
@@ -48,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
                 ToDoItem item = new ToDoItem(text);
                 itemList.add(item);
                 adapter.notifyItemInserted(itemList.size() - 1);
+                saveTasks();
               }
             })
             .setNegativeButton("Anuluj", null)
@@ -64,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
             .setPositiveButton("Zapisz", (dialog, which) -> {
               item.setText(input.getText().toString());
               adapter.notifyItemChanged(position);
+              saveTasks();
             })
             .setNegativeButton("Anuluj", null)
             .show();
@@ -76,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
       itemList.remove(position);
       adapter.notifyDataSetChanged();
     }
+    saveTasks();
   }
 
   @Override
@@ -96,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
                 if (newIndex != -1) {
                   adapter.notifyItemChanged(newIndex);
                 }
+                saveTasks();
               }
             })
             .setNegativeButton("Anuluj", null)
@@ -105,5 +115,28 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
   @Override
   public void onSubtaskDeleted(ToDoItem parentItem, ToDoItem subtask) {
     parentItem.getSubItems().remove(subtask);
+    saveTasks();
   }
+
+  private void saveTasks() {
+    SharedPreferences prefs = getSharedPreferences("todo_prefs", MODE_PRIVATE);
+    SharedPreferences.Editor editor = prefs.edit();
+    Gson gson = new Gson();
+    String json = gson.toJson(itemList); // items to Twoja główna lista zadań
+    editor.putString("todo_list", json);
+    editor.apply();
+  }
+
+  private void loadTasks() {
+    SharedPreferences prefs = getSharedPreferences("todo_prefs", MODE_PRIVATE);
+    String json = prefs.getString("todo_list", null);
+    if (json != null) {
+      Gson gson = new Gson();
+      Type type = new TypeToken<List<ToDoItem>>(){}.getType();
+      itemList = gson.fromJson(json, type);
+    } else {
+      itemList = new ArrayList<>();
+    }
+  }
+
 }
