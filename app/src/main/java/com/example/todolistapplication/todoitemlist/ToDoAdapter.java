@@ -1,186 +1,96 @@
 package com.example.todolistapplication.todoitemlist;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.todolistapplication.MainActivity;
 import com.example.todolistapplication.R;
 import com.example.todolistapplication.todoitem.ToDoItem;
+import com.example.todolistapplication.todoitemlist.SubtaskAdapter;
+import com.example.todolistapplication.todoitemlist.ToDoListener;
 
 import java.util.List;
 
-public class ToDoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int TYPE_MAIN_TASK = 0;
-    private static final int TYPE_SUB_TASK = 1;
+public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHolder> {
 
-    private List<ToDoItem> items;
-    private final OnItemActionListener listener;
+    private final List<ToDoItem> items;
+    private final ToDoListener listener;
 
-    ImageButton moreButton;
-
-    public interface OnItemActionListener {
-        void onEdit(ToDoItem item, int position);
-        void onDelete(ToDoItem item, int position);
-
-        void addSubtask(ToDoItem parentItem, ToDoItem subtask);
-    }
-
-    public ToDoAdapter(List<ToDoItem> items, OnItemActionListener listener) {
+    public ToDoAdapter(List<ToDoItem> items, ToDoListener listener) {
         this.items = items;
         this.listener = listener;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        ToDoItem item = items.get(position);
-        return item.isSubtask() ? 1 : 0;
-    }
-
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
-        if (viewType == 0) {
-            // Główne zadanie
-            View view = inflater.inflate(R.layout.todo_item, parent, false);
-            return new MainTaskViewHolder(view);
-        } else {
-            // Subtask
-            View view = inflater.inflate(R.layout.todo_subtask_item, parent, false);
-            return new SubtaskViewHolder(view);
-        }
+    public MainTaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item, parent, false);
+        return new MainTaskViewHolder(view);
     }
-
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MainTaskViewHolder holder, int position) {
         ToDoItem item = items.get(position);
+        holder.todoText.setText(item.getText());
+        holder.checkBox.setChecked(item.isDone());
+        holder.numberText.setText((position + 1) + ".");
 
-        if (holder instanceof MainTaskViewHolder) {
-            MainTaskViewHolder mainHolder = (MainTaskViewHolder) holder;
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> item.setDone(isChecked));
 
-            // Dane głównego zadania
-            mainHolder.todoText.setText(item.getText());
-            mainHolder.checkBox.setChecked(item.isDone());
-            mainHolder.numberText.setText((position + 1) + ".");
+        holder.todoText.setOnClickListener(view -> listener.onEdit(item, position));
 
-            // Edycja tekstu
-            mainHolder.todoText.setOnClickListener(v -> {
-                mainHolder.todoText.setFocusable(true);
-                mainHolder.todoText.setFocusableInTouchMode(true);
-                mainHolder.todoText.setCursorVisible(true);
-                mainHolder.todoText.requestFocus();
+        holder.moreButton.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+            popupMenu.inflate(R.menu.todoitem_menu);
 
-                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(mainHolder.todoText, InputMethodManager.SHOW_IMPLICIT);
-            });
-
-            mainHolder.todoText.setOnFocusChangeListener((v, hasFocus) -> {
-                if (!hasFocus) {
-                    item.setText(mainHolder.todoText.getText().toString());
-                    mainHolder.todoText.setFocusable(false);
-                    mainHolder.todoText.setFocusableInTouchMode(false);
-                    mainHolder.todoText.setCursorVisible(false);
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
+                int id = menuItem.getItemId();
+                if (id == R.id.edit) {
+                    listener.onEdit(item, position);
+                    return true;
+                } else if (id == R.id.delete) {
+                    listener.onDelete(item, position);
+                    return true;
+                } else if (id == R.id.add_subtask) {
+                    listener.onAddSubtask(item, position);
+                    return true;
                 }
+                return false;
             });
 
-            // Checkbox
-            mainHolder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                item.setDone(isChecked);
-            });
+            popupMenu.show();
+        });
 
-            // Menu (edycja / usuwanie / dodaj subtask)
-            mainHolder.moreButton.setOnClickListener(view -> {
-                PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-                popupMenu.inflate(R.menu.todoitem_menu);
-
-                popupMenu.setOnMenuItemClickListener(menuItem -> {
-                    int id = menuItem.getItemId();
-                    if (id == R.id.edit) {
-                        listener.onEdit(item, position);
-                        return true;
-                    } else if (id == R.id.delete) {
-                        listener.onDelete(item, position);
-                        return true;
-                    } else if (id == R.id.add_subtask) {
-                        if (view.getContext() instanceof MainActivity) {
-                            MainActivity mainActivity = (MainActivity) view.getContext();
-                            mainActivity.showAddSubtaskDialog(item, position);
-                        }
-                        return true;
-                    }
-                    return false;
-                });
-
-                popupMenu.show();
-            });
-
-        } else if (holder instanceof SubtaskViewHolder) {
-            SubtaskViewHolder subtaskHolder = (SubtaskViewHolder) holder;
-
-            // Dane subtaska
-            subtaskHolder.todoText.setText(item.getText());
-            subtaskHolder.checkBox.setChecked(item.isDone());
-
-            // Można dodać obsługę kliknięcia czy checkboxa, jeśli chcesz
-            subtaskHolder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                item.setDone(isChecked);
-            });
-        }
+        holder.subtaskRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
+        holder.subtaskRecyclerView.setAdapter(new SubtaskAdapter(item.getSubItems(), item, listener));
     }
-
-
 
     @Override
     public int getItemCount() {
         return items.size();
     }
 
-    // Widok dla głównego zadania
-    public static class MainTaskViewHolder extends RecyclerView.ViewHolder {
-        TextView todoText;
+    static class MainTaskViewHolder extends RecyclerView.ViewHolder {
+        TextView todoText, numberText;
         CheckBox checkBox;
-        TextView numberText;
         ImageButton moreButton;
+        RecyclerView subtaskRecyclerView;
 
-        public MainTaskViewHolder(View itemView) {
+        MainTaskViewHolder(View itemView) {
             super(itemView);
             todoText = itemView.findViewById(R.id.todo_text_main);
             checkBox = itemView.findViewById(R.id.todo_checkbox_main);
             numberText = itemView.findViewById(R.id.todo_number);
             moreButton = itemView.findViewById(R.id.moreButton_main);
+            subtaskRecyclerView = itemView.findViewById(R.id.subtask_recyclerview);
         }
     }
-    // Widok dla podzadań (subtasków)
-    public static class SubtaskViewHolder extends RecyclerView.ViewHolder {
-        TextView todoText;
-        CheckBox checkBox;
-
-        public SubtaskViewHolder(View itemView) {
-            super(itemView);
-            todoText = itemView.findViewById(R.id.todo_text_subtask);
-            checkBox = itemView.findViewById(R.id.todo_checkbox_subtask);
-        }
-    }
-
-    public void addSubtask(ToDoItem parentItem, ToDoItem subtask) {
-        int parentIndex = items.indexOf(parentItem);
-        if (parentIndex != -1) {
-            parentItem.addSubItem(subtask);  // dodajemy do modelu
-            items.add(parentIndex + 1, subtask);  // dodajemy do listy adaptera (pod spodem)
-            notifyItemInserted(parentIndex + 1);
-        }
-    }
-
 }

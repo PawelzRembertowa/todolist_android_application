@@ -16,18 +16,10 @@ public class ToDoItem {
 
     // Konstruktor dla głównego zadania
     public ToDoItem(String text) {
-        this(text, false); // domyślnie nie jest subtaskiem
-    }
-
-    // Konstruktor dla subtaska
-    public ToDoItem(String text, boolean isSubtask) {
         this.id = System.currentTimeMillis();
         this.text = text;
         this.isDone = false;
         this.subItems = new ArrayList<>();
-        this.createdAt = new Date();
-        this.finishedAt = null;
-        this.isSubtask = isSubtask;
     }
 
     // Gettery i settery
