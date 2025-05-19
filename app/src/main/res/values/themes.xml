@@ -1,9 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- BAZA -->
     <style name="Base.Theme.ToDoListApplication" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#fbc31d</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="android:textColor">@color/my_black</item>
     </style>
 
+    <!-- GŁÓWNY MOTYW -->
     <style name="Theme.ToDoListApplication" parent="Base.Theme.ToDoListApplication" />
 </resources>

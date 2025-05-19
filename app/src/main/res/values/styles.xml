@@ -3,6 +3,13 @@
     <!-- Styl dla menu -->
     <style name="CustomMenuStyle" parent="Widget.AppCompat.PopupMenu">
         <item name="android:background">@color/dark_gray</item>  <!-- Tło ciemnoszare -->
-        <item name="android:textColor">#FFFFFF</item>  <!-- Kolor tekstu biały -->
+
+    </style>
+
+    <!-- Styl dla add buttona -->
+    <style name="FABWithBorder" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">#fbc31d</item>
+        <item name="strokeColor">#000000</item>
+        <item name="strokeWidth">4dp</item>
     </style>
 </resources>

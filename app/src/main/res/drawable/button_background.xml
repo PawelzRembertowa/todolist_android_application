@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#FFFF00"/> <!-- Kolor tła - żółty -->
-    <corners android:radius="12dp"/> <!-- Zaokrąglone rogi -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#fbc31d"/> <!-- Kolor tła - żółty -->
+    <corners android:radius="6dp"/> <!-- Zaokrąglone rogi -->
+    <stroke
+        android:width="2dp"
+        android:color="#000000" />
 </shape>

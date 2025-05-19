@@ -4,26 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="@color/black"
+    android:background="@drawable/card_background_with_border"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="false"
+    app:cardPreventCornerOverlap="false"
+    >
 
   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical">
+      android:orientation="vertical"
+      android:background="@drawable/card_background_with_border"
+     >
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-
-        android:padding="8dp">
+        android:padding="8dp"
+       >
 
       <TextView
           android:id="@+id/todo_number"
           android:layout_width="35px"
-          android:layout_height="50px">
+          android:layout_height="50px"
+          android:fontFamily="@font/poppins_semibold">
 
       </TextView>
 
@@ -44,19 +50,19 @@
           android:paddingStart="8dp"
           android:paddingBottom="8dp"
           android:text="Przykładowe zadanie"
-          android:textColor="#FFFF00"
+          android:textColor="@color/my_black"
           android:textSize="16sp"
-
+          android:fontFamily="@font/poppins_semibold"
           />
 
       <ImageButton
           android:id="@+id/moreButton_main"
-          android:layout_width="20dp"
-          android:layout_height="20dp"
+          android:layout_width="22dp"
+          android:layout_height="22dp"
           android:background="@drawable/button_background"
           android:contentDescription="Opcje"
-          android:src="@android:drawable/ic_menu_more"
-          app:tint="@android:color/black"></ImageButton>
+          android:src="@drawable/ic_more_vert_24dp"
+         ></ImageButton>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
