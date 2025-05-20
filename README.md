@@ -6,4 +6,4 @@ A simple mobile application for creating a to-do list, with the ability to break
 
 Here's what the app looks like:
 
-![App Screenshot](app/assets/ToDo_List_application.png)
+![App Screenshot](app/assets/ToDoList_application.png)
