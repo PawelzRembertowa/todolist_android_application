@@ -49,7 +49,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
       holder.todoText.setTextColor(Color.GRAY);
     } else {
       holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-      holder.todoText.setTextColor(Color.YELLOW);
+      holder.todoText.setTextColor(Color.BLACK);
     }
     holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
       subtask.setDone(isChecked);
@@ -59,7 +59,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
         holder.todoText.setTextColor(Color.GRAY);
       } else {
         holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-        holder.todoText.setTextColor(Color.YELLOW);
+        holder.todoText.setTextColor(Color.BLACK);
       }
     });
 

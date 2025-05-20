@@ -56,7 +56,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
       holder.todoText.setTextColor(Color.GRAY);
     } else {
       holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-      holder.todoText.setTextColor(Color.YELLOW);
+      holder.todoText.setTextColor(Color.BLACK);
     }
 
     holder.checkBox.setOnCheckedChangeListener(
@@ -67,7 +67,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
                 holder.todoText.setTextColor(Color.GRAY);
               } else {
                 holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                holder.todoText.setTextColor(Color.YELLOW);
+                holder.todoText.setTextColor(Color.BLACK);
               }
             }
     );
