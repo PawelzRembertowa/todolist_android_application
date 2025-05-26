@@ -115,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
                   adapter.notifyItemChanged(newIndex);
                 }
                 saveTasks();
+                parentItem.setExpanded(true);
+                adapter.notifyItemChanged(parentPosition);
               }
             })
             .setNegativeButton("Anuluj", null)

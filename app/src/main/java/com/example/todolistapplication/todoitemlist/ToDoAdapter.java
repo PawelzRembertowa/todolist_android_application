@@ -53,19 +53,36 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
     }
     holder.numberText.setText(number + ".");
 
+// Jeśli nie ma subtasków, ukryj przycisk rozwijania
+    if (item.getSubItems() == null || item.getSubItems().isEmpty()) {
+      holder.expandCollapseButton.setVisibility(View.GONE);
+    } else {
+      holder.expandCollapseButton.setVisibility(View.VISIBLE);
+      boolean isExpanded = item.isExpanded();
+      holder.subtaskRecyclerView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+      holder.expandCollapseButton.setImageResource(
+              isExpanded ? R.drawable.ic_expand_less : R.drawable.ic_expand_more
+      );
 
-    // Hide and display subtasks
-    boolean isExpanded = item.isExpanded();
-    holder.subtaskRecyclerView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-    holder.expandCollapseButton.setImageResource(
-            isExpanded ? R.drawable.ic_expand_less : R.drawable.ic_expand_more
-    );
+      holder.expandCollapseButton.setOnClickListener(v -> {
+        item.setExpanded(!item.isExpanded());
+        notifyItemChanged(position);
+      });
+    }
 
-    // Expanding button
-    holder.expandCollapseButton.setOnClickListener(v -> {
-      item.setExpanded(!item.isExpanded());
-      notifyItemChanged(position);
-    });
+
+//    // Hide and display subtasks
+//    boolean isExpanded = item.isExpanded();
+//    holder.subtaskRecyclerView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+//    holder.expandCollapseButton.setImageResource(
+//            isExpanded ? R.drawable.ic_expand_less : R.drawable.ic_expand_more
+//    );
+//
+//    // Expanding button
+//    holder.expandCollapseButton.setOnClickListener(v -> {
+//      item.setExpanded(!item.isExpanded());
+//      notifyItemChanged(position);
+//    });
 
 
     if (item.isDone()) {
