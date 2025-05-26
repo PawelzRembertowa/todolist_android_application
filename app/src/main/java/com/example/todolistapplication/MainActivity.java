@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     loadTasks();
+    updateEmptyView();
     adapter = new ToDoAdapter(itemList, this);
     recyclerView.setAdapter(adapter);
 
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
                 itemList.add(item);
                 adapter.notifyItemInserted(itemList.size() - 1);
                 saveTasks();
+                updateEmptyView();
               }
             })
             .setNegativeButton("Anuluj", null)
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
       adapter.notifyDataSetChanged();
     }
     saveTasks();
+    updateEmptyView();
   }
 
   @Override
@@ -115,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
                   adapter.notifyItemChanged(newIndex);
                 }
                 saveTasks();
+                updateEmptyView();
                 parentItem.setExpanded(true);
                 adapter.notifyItemChanged(parentPosition);
               }
@@ -152,7 +157,9 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
             .setTitle("Usuń wszystkie zadania")
             .setPositiveButton("OK", (dialog, which) -> {
               itemList.clear();
+              saveTasks();
               adapter.notifyDataSetChanged();
+              updateEmptyView();
             })
             .setNegativeButton("Anuluj", null)
             .show();
@@ -176,6 +183,19 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
       itemList = gson.fromJson(json, type);
     } else {
       itemList = new ArrayList<>();
+    }
+  }
+
+  private void updateEmptyView() {
+    View emptyView = findViewById(R.id.emptyView);
+    RecyclerView recyclerView = findViewById(R.id.todoRecyclerView);
+
+    if (itemList.isEmpty()) {
+      emptyView.setVisibility(View.VISIBLE);
+      recyclerView.setVisibility(View.GONE);
+    } else {
+      emptyView.setVisibility(View.GONE);
+      recyclerView.setVisibility(View.VISIBLE);
     }
   }
 

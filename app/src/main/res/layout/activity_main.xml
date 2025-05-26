@@ -8,6 +8,9 @@
     android:background="@color/cardview_dark_background"
     tools:context=".MainActivity">
 
+
+
+
     <!-- Pasek narzędzi w AppBarLayout -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -35,6 +38,41 @@
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
+
+<!-- empty state -->
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="32dp">
+
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_empty_list_24"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brak zadań"
+            android:textSize="18sp"
+            android:textColor="@color/my_black"
+            android:paddingTop="16dp"
+            android:fontFamily="@font/poppins_semibold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dodaj pierwsze zadanie klikając +"
+            android:textSize="14sp"
+            android:textColor="@color/my_black"
+            android:paddingTop="8dp"
+            android:fontFamily="@font/poppins_semibold" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_layout"
@@ -71,3 +109,4 @@
         app:layout_anchorGravity="bottom|end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
