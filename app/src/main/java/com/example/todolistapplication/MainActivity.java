@@ -7,11 +7,15 @@ import java.lang.reflect.Type;
 
 import android.os.Bundle;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    Toolbar toolbar = findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
 
     RecyclerView recyclerView = findViewById(R.id.todoRecyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -118,6 +125,35 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
   public void onSubtaskDeleted(ToDoItem parentItem, ToDoItem subtask) {
     parentItem.getSubItems().remove(subtask);
     saveTasks();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    int id = item.getItemId();
+
+    if (id == R.id.action_show_dialog) {
+      showMyDialog();
+      return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+
+  private void showMyDialog() {
+    new AlertDialog.Builder(this)
+            .setTitle("Usuń wszystkie zadania")
+            .setPositiveButton("OK", (dialog, which) -> {
+              itemList.clear();
+              adapter.notifyDataSetChanged();
+            })
+            .setNegativeButton("Anuluj", null)
+            .show();
   }
 
   private void saveTasks() {
