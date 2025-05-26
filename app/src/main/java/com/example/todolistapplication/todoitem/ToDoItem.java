@@ -13,6 +13,9 @@ public class ToDoItem {
   private Date createdAt;
   private Date finishedAt;
   private boolean isSubtask = false;
+  private boolean isExpanded = false;
+
+
 
   // Constructor for the maintask
   public ToDoItem(String text) {
@@ -20,6 +23,10 @@ public class ToDoItem {
     this.text = text;
     this.isDone = false;
     this.subItems = new ArrayList<>();
+  }
+
+  public boolean isExpanded() {
+    return isExpanded;
   }
 
   // Getters & Setters
@@ -78,5 +85,10 @@ public class ToDoItem {
   public void setSubtask(boolean subtask) {
     isSubtask = subtask;
   }
+
+  public void setExpanded(boolean expanded) {
+    isExpanded = expanded;
+  }
+
 }
 

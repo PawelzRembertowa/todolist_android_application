@@ -55,13 +55,47 @@
             android:textSize="16sp"
             android:fontFamily="@font/poppins_semibold" />
 
-        <ImageButton
-            android:id="@+id/moreButton_main"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:background="@drawable/button_background"
-            android:contentDescription="Opcje"
-            android:src="@drawable/ic_more_vert_24dp" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/moreButton_main"-->
+<!--            android:layout_width="22dp"-->
+<!--            android:layout_height="22dp"-->
+<!--            android:background="@drawable/button_background"-->
+<!--            android:contentDescription="Opcje"-->
+<!--            android:src="@drawable/ic_more_vert_24dp" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/expandCollapseButton"-->
+<!--            android:layout_width="24dp"-->
+<!--            android:layout_height="24dp"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--            android:contentDescription="Rozwiń lub zwiń"-->
+<!--            android:src="@drawable/ic_expand_more" />-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center|end"> <!-- ustawia oba buttony w pionie po prawej -->
+
+          <ImageButton
+              android:id="@+id/moreButton_main"
+              android:layout_width="22dp"
+              android:layout_height="22dp"
+              android:layout_marginBottom="8dp"
+              android:background="@drawable/button_background"
+              android:contentDescription="Opcje"
+              android:src="@drawable/ic_more_vert_24dp" />
+
+          <ImageButton
+              android:id="@+id/expandCollapseButton"
+              android:layout_width="24dp"
+              android:layout_height="24dp"
+              android:background="?attr/selectableItemBackgroundBorderless"
+              android:contentDescription="Rozwiń lub zwiń"
+              android:src="@drawable/ic_expand_more" />
+        </LinearLayout>
+
       </LinearLayout>
 
     </LinearLayout>

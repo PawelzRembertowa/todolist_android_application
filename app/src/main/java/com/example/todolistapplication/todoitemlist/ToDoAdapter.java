@@ -50,6 +50,20 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
     }
     holder.numberText.setText(number + ".");
 
+
+    // Pokaż/ukryj subtaski
+    boolean isExpanded = item.isExpanded();
+    holder.subtaskRecyclerView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+    holder.expandCollapseButton.setImageResource(
+            isExpanded ? R.drawable.ic_expand_less : R.drawable.ic_expand_more
+    );
+
+    // Obsługa kliknięcia przycisku rozwijania
+    holder.expandCollapseButton.setOnClickListener(v -> {
+      item.setExpanded(!item.isExpanded());
+      notifyItemChanged(position);
+    });
+
     // 🎨 Use proper style, depending on checkbox status
     if (item.isDone()) {
       holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -107,6 +121,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
     TextView todoText, numberText;
     CheckBox checkBox;
     ImageButton moreButton;
+    ImageButton expandCollapseButton;
     RecyclerView subtaskRecyclerView;
 
     MainTaskViewHolder(View itemView) {
@@ -115,6 +130,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
       checkBox = itemView.findViewById(R.id.todo_checkbox_main);
       numberText = itemView.findViewById(R.id.todo_number);
       moreButton = itemView.findViewById(R.id.moreButton_main);
+      expandCollapseButton = itemView.findViewById(R.id.expandCollapseButton);
       subtaskRecyclerView = itemView.findViewById(R.id.subtask_recyclerview);
     }
   }
