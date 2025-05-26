@@ -40,6 +40,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
   }
 
   @Override
+  public int getItemCount() {
+    return items.size();
+  }
+
+  @Override
   public void onBindViewHolder(@NonNull MainTaskViewHolder holder, int position) {
     ToDoItem item = items.get(position);
     holder.todoText.setText(item.getText());
@@ -53,7 +58,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
     }
     holder.numberText.setText(number + ".");
 
-// Jeśli nie ma subtasków, ukryj przycisk rozwijania
+    // Hide and display subtasks
     if (item.getSubItems() == null || item.getSubItems().isEmpty()) {
       holder.expandCollapseButton.setVisibility(View.GONE);
     } else {
@@ -70,50 +75,19 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
       });
     }
 
-
-//    // Hide and display subtasks
-//    boolean isExpanded = item.isExpanded();
-//    holder.subtaskRecyclerView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-//    holder.expandCollapseButton.setImageResource(
-//            isExpanded ? R.drawable.ic_expand_less : R.drawable.ic_expand_more
-//    );
-//
-//    // Expanding button
-//    holder.expandCollapseButton.setOnClickListener(v -> {
-//      item.setExpanded(!item.isExpanded());
-//      notifyItemChanged(position);
-//    });
-
-
     if (item.isDone()) {
-      holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-      holder.todoText.setTextColor(Color.GRAY);
-      holder.cardContainer.setBackgroundResource(R.drawable.card_background_done);
-      holder.checkBox.setBackgroundColor(Color.parseColor("#008000"));
-      holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
+      setDoneStatus(holder);
     } else {
-      holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-      holder.todoText.setTextColor(Color.BLACK);
-      holder.cardContainer.setBackgroundResource(R.drawable.card_background_pending);
-      holder.checkBox.setBackgroundColor(Color.parseColor("#fbc31d"));
-      holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
+      setUndoneStatus(holder);
     }
 
     holder.checkBox.setOnCheckedChangeListener(
             (buttonView, isChecked) -> {
               item.setDone(isChecked);
               if (isChecked) {
-                holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                holder.todoText.setTextColor(Color.GRAY);
-                holder.cardContainer.setBackgroundResource(R.drawable.card_background_done);
-                holder.checkBox.setBackgroundColor(Color.parseColor("#008000"));
-                holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
+                setDoneStatus(holder);
               } else {
-                holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                holder.todoText.setTextColor(Color.BLACK);
-                holder.cardContainer.setBackgroundResource(R.drawable.card_background_pending);
-                holder.checkBox.setBackgroundColor(Color.parseColor("#fbc31d"));
-                holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
+                setUndoneStatus(holder);
               }
             }
     );
@@ -144,9 +118,20 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
     holder.subtaskRecyclerView.setAdapter(new SubtaskAdapter(item.getSubItems(), item, listener));
   }
 
-  @Override
-  public int getItemCount() {
-    return items.size();
+  public void setDoneStatus(MainTaskViewHolder holder) {
+    holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+    holder.todoText.setTextColor(Color.GRAY);
+    holder.cardContainer.setBackgroundResource(R.drawable.card_background_done);
+    holder.checkBox.setBackgroundColor(Color.parseColor("#008000"));
+    holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
+  }
+
+  public void setUndoneStatus(MainTaskViewHolder holder) {
+    holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+    holder.todoText.setTextColor(Color.BLACK);
+    holder.cardContainer.setBackgroundResource(R.drawable.card_background_pending);
+    holder.checkBox.setBackgroundColor(Color.parseColor("#fbc31d"));
+    holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
   }
 
   static class MainTaskViewHolder extends RecyclerView.ViewHolder {

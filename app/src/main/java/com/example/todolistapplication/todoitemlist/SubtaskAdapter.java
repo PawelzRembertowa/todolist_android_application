@@ -39,12 +39,15 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
   }
 
   @Override
+  public int getItemCount() {
+    return subtasks.size();
+  }
+
+  @Override
   public void onBindViewHolder(@NonNull SubtaskViewHolder holder, int position) {
     ToDoItem subtask = subtasks.get(position);
     holder.todoText.setText(subtask.getText());
     holder.checkBox.setChecked(subtask.isDone());
-
-    holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> subtask.setDone(isChecked));
 
     if (subtask.isDone()) {
       holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -59,9 +62,9 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
       holder.checkBox.setBackgroundColor(Color.parseColor("#fbc31d"));
       holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
     }
+
     holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
       subtask.setDone(isChecked);
-
       if (isChecked) {
         holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.todoText.setTextColor(Color.GRAY);
@@ -74,6 +77,13 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
         holder.cardContainerSubtask.setBackgroundResource(R.drawable.card_background_pending);
         holder.checkBox.setBackgroundColor(Color.parseColor("#fbc31d"));
         holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
+      }
+
+      parentItem.updateDoneStatusBasedOnSubtasks();
+
+      // ✅Update Maintask if it is needed
+      if (listener != null) {
+        listener.onSubtaskStatusChanged(parentItem);
       }
     });
 
@@ -90,11 +100,6 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
     });
   }
 
-  @Override
-  public int getItemCount() {
-    return subtasks.size();
-  }
-
   static class SubtaskViewHolder extends RecyclerView.ViewHolder {
     TextView todoText;
     CheckBox checkBox;
@@ -107,4 +112,5 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
       cardContainerSubtask = itemView.findViewById(R.id.card_container_subtask);
     }
   }
+
 }

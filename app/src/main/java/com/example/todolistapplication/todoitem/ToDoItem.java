@@ -29,6 +29,21 @@ public class ToDoItem {
     return isExpanded;
   }
 
+  public void updateDoneStatusBasedOnSubtasks() {
+    if (subItems == null || subItems.isEmpty()) return;
+
+    // Change maintask status if all subtasks are done
+    boolean allDone = true;
+    for (ToDoItem sub : subItems) {
+      if (!sub.isDone()) {
+        allDone = false;
+        break;
+      }
+    }
+    this.setDone(allDone);
+  }
+
+
   // Getters & Setters
   public long getId() {
     return id;

@@ -54,23 +54,12 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
     fab.setOnClickListener(v -> showAddMainTaskDialog());
   }
 
-  private void showAddMainTaskDialog() {
-    final EditText input = new EditText(this);
-    new AlertDialog.Builder(this)
-            .setTitle("Dodaj zadanie")
-            .setView(input)
-            .setPositiveButton("Dodaj", (dialog, which) -> {
-              String text = input.getText().toString().trim();
-              if (!text.isEmpty()) {
-                ToDoItem item = new ToDoItem(text);
-                itemList.add(item);
-                adapter.notifyItemInserted(itemList.size() - 1);
-                saveTasks();
-                updateEmptyView();
-              }
-            })
-            .setNegativeButton("Anuluj", null)
-            .show();
+  @Override
+  public void onSubtaskStatusChanged(ToDoItem parentItem) {
+    int index = itemList.indexOf(parentItem);
+    if (index != -1) {
+      adapter.notifyItemChanged(index);
+    }
   }
 
   @Override
@@ -150,6 +139,25 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
     }
 
     return super.onOptionsItemSelected(item);
+  }
+
+  private void showAddMainTaskDialog() {
+    final EditText input = new EditText(this);
+    new AlertDialog.Builder(this)
+            .setTitle("Dodaj zadanie")
+            .setView(input)
+            .setPositiveButton("Dodaj", (dialog, which) -> {
+              String text = input.getText().toString().trim();
+              if (!text.isEmpty()) {
+                ToDoItem item = new ToDoItem(text);
+                itemList.add(item);
+                adapter.notifyItemInserted(itemList.size() - 1);
+                saveTasks();
+                updateEmptyView();
+              }
+            })
+            .setNegativeButton("Anuluj", null)
+            .show();
   }
 
   private void showMyDialog() {
