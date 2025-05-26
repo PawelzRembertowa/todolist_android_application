@@ -14,11 +14,12 @@
     app:cardPreventCornerOverlap="false">
 
   <LinearLayout
+      android:id="@+id/card_container_subtask"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
       android:padding="8dp"
-      android:background="@drawable/card_background_with_border">
+      android:background="@drawable/card_background_pending">
 
     <CheckBox
         android:id="@+id/todo_checkbox_subtask"

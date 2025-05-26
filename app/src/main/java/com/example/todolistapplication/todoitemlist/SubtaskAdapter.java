@@ -1,11 +1,13 @@
 package com.example.todolistapplication.todoitemlist;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,9 +49,15 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
     if (subtask.isDone()) {
       holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
       holder.todoText.setTextColor(Color.GRAY);
+      holder.cardContainerSubtask.setBackgroundResource(R.drawable.card_background_done);
+      holder.checkBox.setBackgroundColor(Color.parseColor("#008000"));
+      holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
     } else {
       holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
       holder.todoText.setTextColor(Color.BLACK);
+      holder.cardContainerSubtask.setBackgroundResource(R.drawable.card_background_pending);
+      holder.checkBox.setBackgroundColor(Color.parseColor("#fbc31d"));
+      holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
     }
     holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
       subtask.setDone(isChecked);
@@ -57,9 +65,15 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
       if (isChecked) {
         holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.todoText.setTextColor(Color.GRAY);
+        holder.cardContainerSubtask.setBackgroundResource(R.drawable.card_background_done);
+        holder.checkBox.setBackgroundColor(Color.parseColor("#008000"));
+        holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
       } else {
         holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         holder.todoText.setTextColor(Color.BLACK);
+        holder.cardContainerSubtask.setBackgroundResource(R.drawable.card_background_pending);
+        holder.checkBox.setBackgroundColor(Color.parseColor("#fbc31d"));
+        holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
       }
     });
 
@@ -84,11 +98,13 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
   static class SubtaskViewHolder extends RecyclerView.ViewHolder {
     TextView todoText;
     CheckBox checkBox;
+    LinearLayout cardContainerSubtask;
 
     SubtaskViewHolder(View itemView) {
       super(itemView);
       todoText = itemView.findViewById(R.id.todo_text_subtask);
       checkBox = itemView.findViewById(R.id.todo_checkbox_subtask);
+      cardContainerSubtask = itemView.findViewById(R.id.card_container_subtask);
     }
   }
 }

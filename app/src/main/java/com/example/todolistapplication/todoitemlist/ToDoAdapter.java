@@ -1,5 +1,6 @@
 package com.example.todolistapplication.todoitemlist;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -7,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,26 +54,32 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
     holder.numberText.setText(number + ".");
 
 
-    // Pokaż/ukryj subtaski
+    // Hide and display subtasks
     boolean isExpanded = item.isExpanded();
     holder.subtaskRecyclerView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
     holder.expandCollapseButton.setImageResource(
             isExpanded ? R.drawable.ic_expand_less : R.drawable.ic_expand_more
     );
 
-    // Obsługa kliknięcia przycisku rozwijania
+    // Expanding button
     holder.expandCollapseButton.setOnClickListener(v -> {
       item.setExpanded(!item.isExpanded());
       notifyItemChanged(position);
     });
 
-    // 🎨 Use proper style, depending on checkbox status
+
     if (item.isDone()) {
       holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
       holder.todoText.setTextColor(Color.GRAY);
+      holder.cardContainer.setBackgroundResource(R.drawable.card_background_done);
+      holder.checkBox.setBackgroundColor(Color.parseColor("#008000"));
+      holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
     } else {
       holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
       holder.todoText.setTextColor(Color.BLACK);
+      holder.cardContainer.setBackgroundResource(R.drawable.card_background_pending);
+      holder.checkBox.setBackgroundColor(Color.parseColor("#fbc31d"));
+      holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
     }
 
     holder.checkBox.setOnCheckedChangeListener(
@@ -79,9 +88,15 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
               if (isChecked) {
                 holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 holder.todoText.setTextColor(Color.GRAY);
+                holder.cardContainer.setBackgroundResource(R.drawable.card_background_done);
+                holder.checkBox.setBackgroundColor(Color.parseColor("#008000"));
+                holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
               } else {
                 holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 holder.todoText.setTextColor(Color.BLACK);
+                holder.cardContainer.setBackgroundResource(R.drawable.card_background_pending);
+                holder.checkBox.setBackgroundColor(Color.parseColor("#fbc31d"));
+                holder.checkBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
               }
             }
     );
@@ -123,6 +138,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
     ImageButton moreButton;
     ImageButton expandCollapseButton;
     RecyclerView subtaskRecyclerView;
+    LinearLayout cardContainer;
 
     MainTaskViewHolder(View itemView) {
       super(itemView);
@@ -132,6 +148,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
       moreButton = itemView.findViewById(R.id.moreButton_main);
       expandCollapseButton = itemView.findViewById(R.id.expandCollapseButton);
       subtaskRecyclerView = itemView.findViewById(R.id.subtask_recyclerview);
+      cardContainer = itemView.findViewById(R.id.card_container);
     }
   }
 }
