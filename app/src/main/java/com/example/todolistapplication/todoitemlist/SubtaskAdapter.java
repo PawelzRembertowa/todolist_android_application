@@ -65,6 +65,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
 
     holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
       subtask.setDone(isChecked);
+      listener.onSaveTasks();
       if (isChecked) {
         holder.todoText.setPaintFlags(holder.todoText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.todoText.setTextColor(Color.GRAY);

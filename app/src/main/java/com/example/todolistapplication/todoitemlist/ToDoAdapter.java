@@ -89,6 +89,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MainTaskViewHo
               } else {
                 setUndoneStatus(holder);
               }
+              listener.onSaveTasks();
             }
     );
     holder.todoText.setOnClickListener(view -> listener.onEdit(item, position));

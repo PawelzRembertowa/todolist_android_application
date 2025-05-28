@@ -141,6 +141,11 @@ public class MainActivity extends AppCompatActivity implements ToDoListener {
     return super.onOptionsItemSelected(item);
   }
 
+  @Override
+  public void onSaveTasks() {
+    saveTasks();
+  }
+
   private void showAddMainTaskDialog() {
     final EditText input = new EditText(this);
     new AlertDialog.Builder(this)

@@ -9,5 +9,7 @@ public interface ToDoListener {
   void onSubtaskDeleted(ToDoItem parentItem, ToDoItem subtask);
 
   void onSubtaskStatusChanged(ToDoItem parentItem);
-  // void onSubtaskStatusChanged(ToDoItem parentMainTask);
+
+  void onSaveTasks();
+
 }
